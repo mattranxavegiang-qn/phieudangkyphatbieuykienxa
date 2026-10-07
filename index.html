@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Phiếu đăng ký phát biểu ý kiến - HĐND xã</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6fa;color:#172b4d;font-family:Arial,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:14px}
+.hero{background:linear-gradient(135deg,#0759a5,#0b78d0);color:white;border-radius:18px;padding:25px;margin:8px 0 16px}
+.hero .eyebrow{font-size:14px;font-weight:700;letter-spacing:.2px}
+.hero h1{margin:8px 0;font-size:27px;line-height:1.25}
+.hero p{line-height:1.55;margin:0;font-weight:600}
+.card{background:white;border-radius:16px;padding:21px;margin:14px 0;box-shadow:0 3px 14px #0001}
+h2{color:#0759a5;margin-top:0}
+label{display:block;font-weight:bold;margin:12px 0 6px}
+input,textarea{width:100%;padding:12px;border:1px solid #d0d5dd;border-radius:9px;font-size:16px}
+textarea{min-height:170px;line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{border:0;border-radius:9px;padding:12px 16px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.primary{background:#0759a5;color:white}
+.secondary{background:#eef5ff;color:#0759a5}
+.record{background:#b8860b;color:white}
+.stop{background:#555;color:white}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:9px}
+.muted{font-size:13px;color:#667085}
+.notice{background:#fff8e6;border-left:4px solid #f79009;padding:11px;border-radius:7px;font-size:13px;line-height:1.5}
+.success{display:none;background:#ecfdf3;border:1px solid #abefc6;color:#027a48;padding:14px;border-radius:9px;margin-top:12px}
+.error{display:none;background:#fdecec;border:1px solid #f5b5b5;color:#a00;padding:14px;border-radius:9px;margin-top:12px}
+.preview{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+.preview img,.preview video{width:120px;height:90px;object-fit:cover;border-radius:8px}
+audio{width:100%;margin-top:10px}
+.attach{border:1px dashed #cbd5e1;border-radius:10px;padding:13px;margin-top:8px}
+.footer{text-align:center;color:#667085;font-size:13px;padding:16px;line-height:1.5}
+@media(max-width:650px){
+  .grid{grid-template-columns:1fr}
+  .hero h1{font-size:23px}
+  .card{padding:17px}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="eyebrow">HỘI NGHỊ TIẾP XÚC CỬ TRI</div>
+  <h1>PHIẾU ĐĂNG KÝ PHÁT BIỂU Ý KIẾN</h1>
+  <p>Trước Kỳ họp thường lệ cuối năm 2026, HĐND xã khóa I, nhiệm kỳ 2026 – 2031</p>
+</div>
+
+<div class="card">
+  <h2>Thông tin người đăng ký</h2>
+
+  <label>Họ và tên <span style="color:#b00000">*</span></label>
+  <input id="name" autocomplete="name" placeholder="Nhập họ và tên" required>
+
+  <div class="grid">
+    <div>
+      <label>Năm sinh <span class="req">*</span></label>
+      <input id="birth" inputmode="numeric" maxlength="4" placeholder="Ví dụ: 1980" required>
+    </div>
+    <div>
+      <label>Chức danh (nếu có)</label>
+      <input id="position" placeholder="Nhập chức danh (nếu có)">
+    </div>
+  </div>
+
+  <label>Địa chỉ <span class="req">*</span></label>
+  <input id="address" autocomplete="street-address" placeholder="Nhập địa chỉ liên hệ" required>
+
+  <label>Nội dung phát biểu ý kiến <span style="color:#b00000">*</span></label>
+  <textarea id="content" placeholder="Nhập nội dung phát biểu ý kiến hoặc bấm “Nói bằng giọng nói”..."></textarea>
+
+  <div class="row">
+    <button type="button" class="secondary" id="voice">🎙️ Nói bằng giọng nói</button>
+    <button type="button" class="secondary" id="clear">Xóa</button>
+    <span class="muted" id="voiceStatus"></span>
+  </div>
+
+  <div class="notice" style="margin-top:10px">
+    Nói tiếng Việt để hệ thống chuyển giọng nói thành văn bản. Trên điện thoại, nếu nút nói không hoạt động,
+    hãy chạm vào ô nội dung và dùng biểu tượng 🎤 trên bàn phím.
+  </div>
+</div>
+
+<div class="card">
+  <h2>Gửi ghi âm, hình ảnh, video</h2>
+
+  <div class="attach">
+    <label style="margin-top:0">🎙️ Ghi âm</label>
+    <input id="audioFile" type="file" accept="audio/*" capture="microphone">
+    <div class="muted" style="margin-top:6px">
+      Trên điện thoại, có thể bấm để chọn file ghi âm hoặc mở chức năng ghi âm của thiết bị (tùy máy/trình duyệt).
+    </div>
+    <audio id="audioPreview" controls style="display:none"></audio>
+    <div id="audioName" class="muted"></div>
+  </div>
+
+  <div class="attach">
+    <label style="margin-top:0">🖼️ Hình ảnh đính kèm</label>
+    <input id="images" type="file" accept="image/*" multiple>
+    <div class="muted" style="margin-top:6px">Có thể chọn nhiều ảnh; khuyến nghị mỗi ảnh không quá 5 MB.</div>
+    <div id="imagePreview" class="preview"></div>
+  </div>
+
+  <div class="attach">
+    <label style="margin-top:0">🎥 Video đính kèm</label>
+    <input id="videos" type="file" accept="video/*" multiple>
+    <div class="muted" style="margin-top:6px">Có thể chọn nhiều video; khuyến nghị mỗi video không quá 30 MB.</div>
+    <div id="videoPreview" class="preview"></div>
+  </div>
+
+  <div class="notice" style="margin-top:12px">
+    Chỉ gửi nội dung, hình ảnh, video và ghi âm phục vụ việc đăng ký/phát biểu tại Hội nghị.
+    Không gửi mật khẩu hoặc thông tin tài chính.
+  </div>
+
+  <div class="row" style="justify-content:flex-end">
+    <button class="primary" id="submit">📨 GỬI PHIẾU ĐĂNG KÝ</button>
+  </div>
+
+  <div id="success" class="success"></div>
+  <div id="error" class="error"></div>
+</div>
+
+<div class="footer">
+  Ghi chú: Phiếu đăng ký phát biểu gửi về cho BTC Hội nghị
+</div>
+
+</div>
+
+<script>
+/* GIỮ NGUYÊN WEB APP URL TỪ MÃ SẾP ĐƯA */
+const API_URL="https://script.google.com/macros/s/AKfycbzRqXCi6rSW1yv62Kjm22U5CIAE-2DWGcJvsxOlIJTY3kjCDYhkFcNNIl9GqHAKmGs/exec;
+
+const $=id=>document.getElementById(id);
+let rec=null, base="", listening=false;
+
+function show(type,text){
+  const ok=$("success"), err=$("error");
+  ok.style.display=type==="ok"?"block":"none";
+  err.style.display=type==="err"?"block":"none";
+  (type==="ok"?ok:err).textContent=text;
+}
+
+function setVoice(text){$("voiceStatus").textContent=text}
+
+/* ===== NÓI BẰNG GIỌNG NÓI: dùng đúng cơ chế trong mã Sếp gửi ===== */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let voiceStarting=false;
+
+if(SR){
+  rec=new SR();
+  rec.lang="vi-VN";
+  rec.continuous=true;
+  rec.interimResults=true;
+
+  rec.onstart=()=>{
+    voiceStarting=false;
+    listening=true;
+    $("voice").textContent="⏹️ Dừng";
+    setVoice("Đang nghe... Hãy nói bằng tiếng Việt.");
+  };
+
+  rec.onend=()=>{
+    voiceStarting=false;
+    listening=false;
+    $("voice").textContent="🎙️ Nói bằng giọng nói";
+    setVoice("");
+  };
+
+  rec.onresult=e=>{
+    let interim="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      let t=e.results[i][0].transcript;
+      if(e.results[i].isFinal) base+=(base?" ":"")+t;
+      else interim+=t;
+    }
+    $("content").value=(base+" "+interim).trim();
+  };
+
+  rec.onerror=e=>{
+    voiceStarting=false;
+    listening=false;
+    $("voice").textContent="🎙️ Nói bằng giọng nói";
+    const m={
+      "not-allowed":"Micro đang bị chặn. Hãy cho phép Micro cho trình duyệt, sau đó tải lại trang.",
+      "service-not-allowed":"Trình duyệt không cho phép dịch vụ nhận giọng nói.",
+      "no-speech":"Chưa nghe thấy tiếng nói. Hãy bấm lại rồi nói ngay.",
+      "audio-capture":"Không lấy được Micro của điện thoại.",
+      "network":"Không kết nối được dịch vụ nhận giọng nói. Kiểm tra Internet."
+    };
+    setVoice(m[e.error]||"Không sử dụng được chức năng nói trên thiết bị này.");
+  };
+
+  $("voice").onclick=()=>{
+    if(listening){
+      rec.stop();
+      return;
+    }
+
+    if(voiceStarting) return;
+
+    base=$("content").value.trim();
+    if(base && !base.endsWith(" ")) base+=" ";
+
+    voiceStarting=true;
+    setVoice("Đang khởi động Micro...");
+
+    try{
+      rec.start();
+    }catch(err){
+      voiceStarting=false;
+
+      // Chrome mobile đôi khi còn giữ phiên cũ sau khi vừa dừng.
+      setTimeout(()=>{
+        try{
+          rec.start();
+        }catch(err2){
+          listening=false;
+          $("voice").textContent="🎙️ Nói bằng giọng nói";
+          $("content").focus();
+          setVoice("Không bật được Micro trên trình duyệt. Hãy dùng biểu tượng 🎤 trên bàn phím điện thoại để đọc nội dung.");
+        }
+      },500);
+    }
+  };
+}else{
+  $("voice").textContent="🎤 Dùng mic bàn phím";
+  $("voice").onclick=()=>{
+    $("content").focus();
+  };
+  setVoice("Trình duyệt không hỗ trợ nhận giọng nói tự động. Chạm vào ô nội dung rồi bấm 🎤 trên bàn phím.");
+}
+
+/* ===== XÓA ===== */
+$("clear").onclick=()=>{
+  $("content").value="";
+  base="";
+  setVoice("");
+};
+
+/* ===== XEM TRƯỚC ẢNH / VIDEO ===== */
+function previewFiles(input,target,type){
+  const box=$(target);
+  box.innerHTML="";
+  [...input.files].forEach(f=>{
+    const el=document.createElement(type);
+    el.src=URL.createObjectURL(f);
+    if(type==="video") el.controls=true;
+    box.appendChild(el);
+  });
+}
+$("images").onchange=()=>previewFiles($("images"),"imagePreview","img");
+$("videos").onchange=()=>previewFiles($("videos"),"videoPreview","video");
+
+/* ===== XEM TRƯỚC GHI ÂM ===== */
+$("audioFile").onchange=()=>{
+  const f=$("audioFile").files[0];
+  if(!f){
+    $("audioPreview").style.display="none";
+    $("audioName").textContent="";
+    return;
+  }
+  $("audioPreview").src=URL.createObjectURL(f);
+  $("audioPreview").style.display="block";
+  $("audioName").textContent="Đã chọn: "+f.name;
+};
+
+/* ===== FILE -> BASE64 ===== */
+function fileToData(f){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>resolve({
+      name:f.name,
+      mimeType:f.type||"application/octet-stream",
+      data:String(r.result).split(",")[1]
+    });
+    r.onerror=reject;
+    r.readAsDataURL(f);
+  });
+}
+
+/* ===== GỬI ===== */
+$("submit").onclick=async()=>{
+  show("err","");
+  show("ok","");
+
+  const name=$("name").value.trim();
+  const birth=$("birth").value.trim();
+  const position=$("position").value.trim();
+  const address=$("address").value.trim();
+  const content=$("content").value.trim();
+
+  if(!name||!birth||!address||!content){
+    show("err","Vui lòng nhập đầy đủ Họ và tên, Năm sinh , Địa chỉ và Nội dung phát biểu ý kiến.");
+    return;
+  }
+  if(!/^\d{4}$/.test(birth)){
+    show("err","Năm sinh phải gồm 4 chữ số.");
+    return;
+  }
+
+  $("submit").disabled=true;
+  $("submit").textContent="Đang gửi...";
+
+  try{
+    const attachments=[];
+
+    const audio=$("audioFile").files[0];
+    if(audio){
+      if(audio.size>30*1024*1024) throw Error("File ghi âm không quá 30 MB.");
+      attachments.push(await fileToData(audio));
+    }
+
+    for(const f of $("images").files){
+      if(f.size>5*1024*1024) throw Error("Mỗi ảnh không quá 5 MB.");
+      attachments.push(await fileToData(f));
+    }
+
+    for(const f of $("videos").files){
+      if(f.size>30*1024*1024) throw Error("Mỗi video không quá 30 MB.");
+      attachments.push(await fileToData(f));
+    }
+
+    const payload={
+      action:"registerSpeech",
+      name,
+      birth,
+      position,
+      address,
+      content,
+      attachments
+    };
+
+    const r=await fetch(API_URL,{method:"POST",body:JSON.stringify(payload)});
+    const j=await r.json();
+
+    if(!j.ok) throw Error(j.message||"Không gửi được phiếu.");
+
+    show("ok","ĐĂNG KÝ THÀNH CÔNG!\nMã đăng ký: "+j.code+"\nVui lòng lưu lại mã này để làm việc với Ban Tổ chức.");
+
+    $("name").value="";
+    $("birth").value="";
+    $("position").value="";
+    $("address").value="";
+    $("content").value="";
+    $("audioFile").value="";
+    $("images").value="";
+    $("videos").value="";
+    $("imagePreview").innerHTML="";
+    $("videoPreview").innerHTML="";
+    $("audioPreview").removeAttribute("src");
+    $("audioPreview").style.display="none";
+    $("audioName").textContent="";
+    base="";
+    setVoice("");
+
+  }catch(e){
+    show("err","Gửi không thành công: "+e.message);
+  }finally{
+    $("submit").disabled=false;
+    $("submit").textContent="📨 GỬI PHIẾU ĐĂNG KÝ";
+  }
+};
+</script>
+</body>
+</html>
